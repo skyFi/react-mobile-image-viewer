@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import viewer from './components/image-viewer/index';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.preview = this.preview.bind(this);
+  }
+  componentDidMount() {
+    this.__preview();
+  }
+  preview() {
+    this.__preview();
+  }
+  // 预览图片
+  __preview() {
+    viewer({
+      urls: ['/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', '/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', '/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', ]
+    });
+  }
+  render() {
+    return (
+      <center>
+        <h1 onClick={this.preview}>点击预览</h1>
+      </center>
+    );
+  }
 }
 
 export default App;
