@@ -1,3 +1,15 @@
+# react-mobile-image-viewer
+
+## 预览
+
+预览：（这下面应该有gif动图）
+
+> gif 文件有 `11.2Mb`，网络不佳的情况下需要加载一段时间，请稍后，你还可以下载下来查看：[点击下载实例gif](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__example.gif)
+
+![](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__example.gif)
+
+gif文件位置：[https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif](https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif)
+
 ## 安装
 
 ```bash
