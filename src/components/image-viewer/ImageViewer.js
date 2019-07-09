@@ -18,7 +18,11 @@ export default class ImageViewer extends React.Component {
   }
 
   changeIndex(index) {
+    const { onChange } = this.props;
     this.setState({ index });
+    if (onChange instanceof Function) {
+      onChange({ currentIndex: index });
+    }
   }
 
   render() {
@@ -31,7 +35,7 @@ export default class ImageViewer extends React.Component {
         return null;
       }
       if (footer instanceof Function) {
-        const r = footer();
+        const r = footer({ currentIndex: index });
         return React.isValidElement(r) ? r : null;
       }
       if (React.isValidElement(footer)) {

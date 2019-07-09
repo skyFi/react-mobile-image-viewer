@@ -34,7 +34,6 @@ function getDistanceBetweenTouches(e) {
 const maxAnimateTime = 1000;
 const minTapMoveValue = 5;
 const maxTapTimeValue = 300;
-const doubleTapTimeValue = 500;
 
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）

@@ -16,7 +16,14 @@ class App extends React.Component {
   // 预览图片
   __preview() {
     viewer({
-      urls: ['/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', '/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', '/assets/pexels-photo-273222.jpeg', '/assets/antd-pro.png', ]
+      urls: [
+        '/assets/pexels-photo-273222.jpeg',
+        '/assets/antd-pro.png',
+        '/assets/pexels-photo-273222.jpeg',
+        '/assets/antd-pro.png',
+        '/assets/pexels-photo-273222.jpeg',
+        '/assets/antd-pro.png'
+      ]
     });
   }
   render() {

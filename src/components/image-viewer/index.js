@@ -21,7 +21,8 @@ export default (options = {}) => {
     debug = false, // 是否打印开发日志
     screenWidth, // 屏幕宽 document.documentElement.clientWidth
     screenHeight, // 屏幕高 document.documentElement.clientHeight
-    strict = true // 严格操作模式，开启将禁止 safari 的橡皮筋效果
+    strict = true, // 严格操作模式，开启将禁止 safari 的橡皮筋效果
+    onChange = () => {}, // 换页操作回调
   } = options;
   let $node = document.createElement('div');
   let $container = getContainer();
@@ -38,17 +39,18 @@ export default (options = {}) => {
   if (Array.isArray(urls) && urls.length > 0) {
     ReactDOM.render(
       <Viewer
-        maxZoomNum={maxZoomNum}
-        zIndex={zIndex}
         index={index}
         urls={urls}
-        gap={gap}
-        speed={speed}
-        debug={debug}
-        onClose={handleClose}
         footer={footer}
-        screenWidth={screenWidth}
+        onClose={handleClose}
+        onChange={onChange}
+        maxZoomNum={maxZoomNum}
+        zIndex={zIndex}
+        speed={speed}
+        gap={gap}
         screenHeight={screenHeight}
+        screenWidth={screenWidth}
+        debug={debug}
       />,
       $node
     );
@@ -67,6 +69,10 @@ export default (options = {}) => {
   // iOS safari 阻止“橡皮筋效果”
   function handleTouchmove(e) {
     e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+  }
+
+  return {
+    destroy: handleClose
   }
 };
 
