@@ -1,6 +1,6 @@
 {
   "name": "react-mobile-image-viewer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "🚀 React Image Viewer for mobile phone, just like wechat image preview.",
   "main": "index.js",
   "keywords": [
@@ -10,6 +10,7 @@
     "wechat image preview",
     "wx image preview"
   ],
+  "repository": "https://github.com/skyFi/react-mobile-image-viewer",
   "author": "skylor",
   "license": "MIT",
   "dependencies": {
