@@ -1,5 +1,5 @@
 import React from 'react';
-import viewer from './components/image-viewer/index';
+import viewer from './components/image-viewer/src/index';
 
 class App extends React.Component {
   constructor() {
