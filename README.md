@@ -8,7 +8,18 @@
 
 ![](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__example.gif)
 
-gif文件位置：[https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif](https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif)
+gif文件位置：[httpsmv ://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif](https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif)
+
+## 体验
+
+```bash
+git clone https://github.com/skyFi/react-mobile-image-viewer.git
+cd react-mobile-image-viewer
+yarn && npm start
+```
+
+1. 本地手机预览需要在同一个局域网下面访问`<本地电脑ip>:3000`
+2. 在先预览
 
 ## 安装
 
