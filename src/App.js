@@ -18,12 +18,12 @@ class App extends React.Component {
   __preview() {
     viewer({
       urls: [
-        '/assets/pexels-photo-273222.jpeg',
-        '/assets/antd-pro.png',
-        '/assets/pexels-photo-273222.jpeg',
-        '/assets/antd-pro.png',
-        '/assets/pexels-photo-273222.jpeg',
-        '/assets/antd-pro.png'
+        'assets/pexels-photo-273222.jpeg',
+        'assets/antd-pro.png',
+        'assets/pexels-photo-273222.jpeg',
+        'assets/antd-pro.png',
+        'assets/pexels-photo-273222.jpeg',
+        'assets/antd-pro.png'
       ]
     });
   }

@@ -20,12 +20,17 @@
     "eject": "react-scripts eject",
     "postbuild": "react-snap"
   },
+  "homepage": "http://skyFi.github.io/react-mobile-image-viewer/",
   "eslintConfig": {
     "extends": "react-app"
   },
+  "reactSnap": {
+    "inlineCss": true,
+    "source": "build"
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && rm -rf build && mv build docs && lint-staged"
+      "pre-commit": "npm run build && mv build docs && lint-staged"
     }
   },
   "lint-staged": {
