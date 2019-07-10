@@ -8,9 +8,6 @@ class App extends React.Component {
 
     this.preview = this.preview.bind(this);
   }
-  componentDidMount() {
-    this.__preview();
-  }
   preview() {
     this.__preview();
   }

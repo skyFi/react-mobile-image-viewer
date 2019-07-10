@@ -19,6 +19,9 @@ yarn && npm start
 ```
 
 1. 本地手机预览需要在同一个局域网下面访问`<本地电脑ip>:3000`
+2. 在线预览： [https://skyfi.github.io/react-mobile-image-viewer/](https://skyfi.github.io/react-mobile-image-viewer/)
+
+![](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__qrcode.png)
 
 ## 安装
 
