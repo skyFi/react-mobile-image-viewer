@@ -30,7 +30,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && mv build docs && lint-staged"
+      "pre-commit": "npm run build && rm -rf docs && mv build docs && lint-staged"
     }
   },
   "lint-staged": {
