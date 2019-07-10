@@ -63,7 +63,7 @@ import 'react-mobile-image-viewer/lib/index.css';
 | ------------ | --------------------------------------------------- | ---------------------------------------------- | --------------------- |
 | urls         | `string[]`                                          | 需要预览的图片链接列表                         | `[]`                  |
 | index        | `number`                                            | 当前显示图片的位置索引，从 `0` 开始            | `0`                   |
-| footer       | `ReactNode|({ currentIndex: number }) => ReactNode` | 自定义底部节点                                 | `null`                |
+| footer       | `ReactNode/({ currentIndex: number }) => ReactNode` | 自定义底部节点                                 | `null`                |
 | onClose      | `() => void`                                        | 关闭组件回调                                   | `() => {}`            |
 | onChange     | `({ currentIndex: number }) => void`                | 换页操作回调                                   | `() => {}`            |
 | getContainer | `() => DOM element`                                 | 自定义容器                                     | `() => document.body` |
