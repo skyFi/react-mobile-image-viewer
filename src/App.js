@@ -16,11 +16,12 @@ class App extends React.Component {
     viewer({
       urls: [
         'assets/pexels-photo-273222.jpeg',
-        'assets/antd-pro.png',
-        'assets/pexels-photo-273222.jpeg',
-        'assets/antd-pro.png',
-        'assets/pexels-photo-273222.jpeg',
-        'assets/antd-pro.png'
+        'assets/pexels-photo-775415.jpeg',
+        'assets/pexels-photo-459793.jpeg',
+        'assets/pexels-photo-533405.jpeg',
+        'assets/pexels-photo-459688.jpeg',
+        'assets/pexels-photo-416343.jpeg',
+        'assets/pexels-photo-277615.jpeg',
       ]
     });
   }

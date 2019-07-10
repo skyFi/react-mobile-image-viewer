@@ -8,7 +8,7 @@ class Pointer extends Component {
       items = [];
     if (length >= 6) {
       items.push(
-        <div className="viewer-container__pointer-box__nums">{`${index + 1}/${length}`}</div>
+        <div className="viewer-container__pointer-box__nums" key="nums">{`${index + 1}/${length}`}</div>
       )
     } else {
       for (i; i < length; i++) {
