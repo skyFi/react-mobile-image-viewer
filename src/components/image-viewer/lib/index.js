@@ -42,7 +42,7 @@ var _default = function _default() {
     return document.body;
   } : _options$getContainer,
       _options$footer = options.footer,
-      footer = _options$footer === void 0 ? null : _options$footer,
+      footer = _options$footer === void 0 ? undefined : _options$footer,
       _options$debug = options.debug,
       debug = _options$debug === void 0 ? false : _options$debug,
       screenWidth = options.screenWidth,

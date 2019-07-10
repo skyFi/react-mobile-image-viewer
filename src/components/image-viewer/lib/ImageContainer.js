@@ -66,7 +66,7 @@ function getDistanceBetweenTouches(e) {
 
 var maxAnimateTime = 1000;
 var minTapMoveValue = 5;
-var maxTapTimeValue = 50;
+var maxTapTimeValue = 70;
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
  * 图片实际尺寸： actualWith, actualHeight
@@ -478,14 +478,16 @@ function (_PureComponent) {
             return;
           }
         } // TODO: 下拉移动距离超过屏幕高度的 1/3 则关闭
+        // this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
+        // if (
+        //   Math.abs(diffX) < Math.abs(diffY) &&
+        //   Math.abs(diffY) > this.props.screenHeight / 3 &&
+        //   this.startTop === this.originTop
+        // ) {
+        //   this.props.onClose instanceof Function && this.props.onClose();
+        //   return;
+        // }
 
-
-        this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
-
-        if (Math.abs(diffX) < Math.abs(diffY) && Math.abs(diffY) > this.props.screenHeight / 3 && this.startTop === this.originTop) {
-          this.props.onClose instanceof Function && this.props.onClose();
-          return;
-        }
 
         var x;
         var y;
@@ -494,7 +496,15 @@ function (_PureComponent) {
         var height = scale * this.originHeight; // 使用相同速度算法
 
         x = diffX * maxAnimateTime / diffTime + this.startLeft;
-        y = diffY * maxAnimateTime / diffTime + this.startTop;
+        y = diffY * maxAnimateTime / diffTime + this.startTop; // 边界计算
+
+        x = setScope(x, this.originWidth - width, 0);
+
+        if (height > this.props.screenHeight) {
+          y = setScope(y, this.props.screenHeight - height, 0);
+        } else {
+          y = this.state.top;
+        }
 
         if (this.state.scale === this.originScale) {
           x = 0;
@@ -504,15 +514,6 @@ function (_PureComponent) {
           } else {
             y = this.originTop;
           }
-        } // 边界计算
-
-
-        x = setScope(x, this.originWidth - width, 0);
-
-        if (height > this.props.screenHeight) {
-          y = setScope(y, this.props.screenHeight - height, 0);
-        } else {
-          y = this.state.top;
         }
 
         this.animateStartValue = {

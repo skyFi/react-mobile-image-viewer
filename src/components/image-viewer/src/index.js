@@ -17,7 +17,7 @@ export default (options = {}) => {
     speed = 300, // Duration of transition between slides (in ms)
     onClose = () => {}, // 关闭组件回调
     getContainer = () => document.body, // 容器
-    footer = null, // 底部节点
+    footer = undefined, // 底部节点
     debug = false, // 是否打印开发日志
     screenWidth, // 屏幕宽 document.documentElement.clientWidth
     screenHeight, // 屏幕高 document.documentElement.clientHeight

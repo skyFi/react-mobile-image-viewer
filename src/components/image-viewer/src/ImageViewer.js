@@ -40,9 +40,6 @@ export default class ImageViewer extends React.Component {
 
     // 获取底部元素
     function getFooter() {
-      if (!footer) {
-        return null;
-      }
       if (footer instanceof Function) {
         const r = footer({ currentIndex: index });
         return React.isValidElement(r) ? r : null;
@@ -51,7 +48,7 @@ export default class ImageViewer extends React.Component {
         return footer;
       }
 
-      return null;
+      return footer;
     }
 
     const f = getFooter();
@@ -71,7 +68,7 @@ export default class ImageViewer extends React.Component {
           speed={speed}
           index={index}
         />
-        {f ? (
+        {f !== undefined ? (
           <div className="viewer-container__pointer-box">{f}</div>
         ) : (
           <Pointer length={urls.length} index={index} changeIndex={this.changeIndex} />

@@ -33,7 +33,7 @@ function getDistanceBetweenTouches(e) {
 // const msPerFrame = 1000 / 60;
 const maxAnimateTime = 1000;
 const minTapMoveValue = 5;
-const maxTapTimeValue = 50;
+const maxTapTimeValue = 70;
 
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
@@ -400,15 +400,15 @@ class ImageContainer extends PureComponent {
         }
       }
       // TODO: 下拉移动距离超过屏幕高度的 1/3 则关闭
-      this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
-      if (
-        Math.abs(diffX) < Math.abs(diffY) &&
-        Math.abs(diffY) > this.props.screenHeight / 3 &&
-        this.startTop === this.originTop
-      ) {
-        this.props.onClose instanceof Function && this.props.onClose();
-        return;
-      }
+      // this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
+      // if (
+      //   Math.abs(diffX) < Math.abs(diffY) &&
+      //   Math.abs(diffY) > this.props.screenHeight / 3 &&
+      //   this.startTop === this.originTop
+      // ) {
+      //   this.props.onClose instanceof Function && this.props.onClose();
+      //   return;
+      // }
 
       let x;
       let y;
@@ -420,6 +420,14 @@ class ImageContainer extends PureComponent {
       x = (diffX * maxAnimateTime) / diffTime + this.startLeft;
       y = (diffY * maxAnimateTime) / diffTime + this.startTop;
 
+      // 边界计算
+      x = setScope(x, this.originWidth - width, 0);
+      if (height > this.props.screenHeight) {
+        y = setScope(y, this.props.screenHeight - height, 0);
+      } else {
+        y = this.state.top;
+      }
+
       if (this.state.scale === this.originScale) {
         x = 0;
         if (height > this.props.screenHeight) {
@@ -427,14 +435,6 @@ class ImageContainer extends PureComponent {
         } else {
           y = this.originTop;
         }
-      }
-
-      // 边界计算
-      x = setScope(x, this.originWidth - width, 0);
-      if (height > this.props.screenHeight) {
-        y = setScope(y, this.props.screenHeight - height, 0);
-      } else {
-        y = this.state.top;
       }
 
       this.animateStartValue = {

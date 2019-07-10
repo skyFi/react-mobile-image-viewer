@@ -83,10 +83,6 @@ function (_React$Component) {
       var index = this.state.index; // 获取底部元素
 
       function getFooter() {
-        if (!footer) {
-          return null;
-        }
-
         if (footer instanceof Function) {
           var r = footer({
             currentIndex: index
@@ -98,7 +94,7 @@ function (_React$Component) {
           return footer;
         }
 
-        return null;
+        return footer;
       }
 
       var f = getFooter();
@@ -120,7 +116,7 @@ function (_React$Component) {
         gap: gap,
         speed: speed,
         index: index
-      }), f ? _react.default.createElement("div", {
+      }), f !== undefined ? _react.default.createElement("div", {
         className: "viewer-container__pointer-box"
       }, f) : _react.default.createElement(_Pointer.default, {
         length: urls.length,

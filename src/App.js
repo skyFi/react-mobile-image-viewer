@@ -15,6 +15,7 @@ class App extends React.Component {
   __preview() {
     viewer({
       urls: [
+        'assets/of.png',
         'assets/pexels-photo-273222.jpeg',
         'assets/pexels-photo-775415.jpeg',
         'assets/pexels-photo-459793.jpeg',
