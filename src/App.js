@@ -21,8 +21,9 @@ class App extends React.Component {
         'assets/pexels-photo-533405.jpeg',
         'assets/pexels-photo-459688.jpeg',
         'assets/pexels-photo-416343.jpeg',
-        'assets/pexels-photo-277615.jpeg',
-      ]
+        'assets/pexels-photo-277615.jpeg'
+      ],
+      debug: true
     });
   }
   render() {

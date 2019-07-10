@@ -33,7 +33,7 @@ function getDistanceBetweenTouches(e) {
 // const msPerFrame = 1000 / 60;
 const maxAnimateTime = 1000;
 const minTapMoveValue = 5;
-const maxTapTimeValue = 300;
+const maxTapTimeValue = 50;
 
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
@@ -413,7 +413,7 @@ class ImageContainer extends PureComponent {
       let x;
       let y;
       const { scale } = this.state;
-      // const width = scale * this.originWidth;
+      const width = scale * this.originWidth;
       const height = scale * this.originHeight;
 
       // 使用相同速度算法
@@ -429,13 +429,13 @@ class ImageContainer extends PureComponent {
         }
       }
 
-      // x = setScope(x, this.originWidth - width, 0);
-
-      // if (height > this.props.screenHeight) {
-      // y = setScope(y, this.props.screenHeight - height, 0);
-      // } else {
-      //   y = this.state.top;
-      // }
+      // 边界计算
+      x = setScope(x, this.originWidth - width, 0);
+      if (height > this.props.screenHeight) {
+        y = setScope(y, this.props.screenHeight - height, 0);
+      } else {
+        y = this.state.top;
+      }
 
       this.animateStartValue = {
         x: this.state.left,

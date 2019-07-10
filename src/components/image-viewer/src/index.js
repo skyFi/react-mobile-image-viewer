@@ -22,7 +22,7 @@ export default (options = {}) => {
     screenWidth, // 屏幕宽 document.documentElement.clientWidth
     screenHeight, // 屏幕高 document.documentElement.clientHeight
     strict = true, // 严格操作模式，开启将禁止 safari 的橡皮筋效果
-    onChange = () => {}, // 换页操作回调
+    onChange = () => {} // 换页操作回调
   } = options;
   let $node = document.createElement('div');
   let $container = getContainer();
@@ -73,7 +73,7 @@ export default (options = {}) => {
 
   return {
     destroy: handleClose
-  }
+  };
 };
 
 // 判断是否是 DOM element, 来自 lodash https://github.com/lodash/lodash/blob/master/isElement.js

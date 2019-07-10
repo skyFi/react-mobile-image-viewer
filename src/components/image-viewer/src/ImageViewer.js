@@ -24,7 +24,18 @@ export default class ImageViewer extends React.Component {
   }
 
   render() {
-    const { maxZoomNum, zIndex, urls, gap, speed, onClose, footer, debug, screenWidth: width, screenHeight: height } = this.props;
+    const {
+      maxZoomNum,
+      zIndex,
+      urls,
+      gap,
+      speed,
+      onClose,
+      footer,
+      debug,
+      screenWidth: width,
+      screenHeight: height
+    } = this.props;
     const { index } = this.state;
 
     // 获取底部元素

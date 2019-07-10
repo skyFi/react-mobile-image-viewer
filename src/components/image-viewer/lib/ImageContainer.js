@@ -66,7 +66,7 @@ function getDistanceBetweenTouches(e) {
 
 var maxAnimateTime = 1000;
 var minTapMoveValue = 5;
-var maxTapTimeValue = 300;
+var maxTapTimeValue = 50;
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
  * 图片实际尺寸： actualWith, actualHeight
@@ -489,8 +489,8 @@ function (_PureComponent) {
 
         var x;
         var y;
-        var scale = this.state.scale; // const width = scale * this.originWidth;
-
+        var scale = this.state.scale;
+        var width = scale * this.originWidth;
         var height = scale * this.originHeight; // 使用相同速度算法
 
         x = diffX * maxAnimateTime / diffTime + this.startLeft;
@@ -504,13 +504,16 @@ function (_PureComponent) {
           } else {
             y = this.originTop;
           }
-        } // x = setScope(x, this.originWidth - width, 0);
-        // if (height > this.props.screenHeight) {
-        // y = setScope(y, this.props.screenHeight - height, 0);
-        // } else {
-        //   y = this.state.top;
-        // }
+        } // 边界计算
 
+
+        x = setScope(x, this.originWidth - width, 0);
+
+        if (height > this.props.screenHeight) {
+          y = setScope(y, this.props.screenHeight - height, 0);
+        } else {
+          y = this.state.top;
+        }
 
         this.animateStartValue = {
           x: this.state.left,

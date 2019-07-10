@@ -93,7 +93,8 @@ class ListContainer extends PureComponent {
   handleEnd(isAllowChange) {
     let index;
     const diffTime = new Date().getTime() - this.startTime;
-    this.props.debug && console.info('handleEnd %s', isAllowChange, diffTime, this.state.left, this.startLeft, this.props.index);
+    this.props.debug &&
+      console.info('handleEnd %s', isAllowChange, diffTime, this.state.left, this.startLeft, this.props.index);
     // 快速拖动情况下切换图片
     if (isAllowChange && diffTime < DEFAULT_TIME_DIFF) {
       if (this.state.left < this.startLeft) {
