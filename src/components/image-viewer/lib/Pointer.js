@@ -53,7 +53,8 @@ function (_Component) {
 
       if (length >= 6) {
         items.push(_react.default.createElement("div", {
-          className: "viewer-container__pointer-box__nums"
+          className: "viewer-container__pointer-box__nums",
+          key: "nums"
         }, "".concat(index + 1, "/").concat(length)));
       } else {
         for (i; i < length; i++) {

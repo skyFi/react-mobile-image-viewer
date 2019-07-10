@@ -1,6 +1,6 @@
 {
   "name": "react-mobile-image-viewer",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "🚀 React Image Viewer for mobile phone, just like wechat image preview.",
   "main": "index.js",
   "scripts": {
