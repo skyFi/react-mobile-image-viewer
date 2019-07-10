@@ -35,6 +35,7 @@ npm install react-mobile-image-viewer --save
 ```javascript
 // import
 import viewer from 'react-mobile-image-viewer';
+import 'react-mobile-image-viewer/lib/index.css';
 
 // show viewer
 this.v = viewer({
@@ -50,6 +51,7 @@ this.v && this.v.destroy();
 ```javascript
 // import
 import { ImageViewer } from 'react-mobile-image-viewer';
+import 'react-mobile-image-viewer/lib/index.css';
 
 // show viewer
 <ImageViewer urls={['... image url', '... image url']} />;

@@ -177,6 +177,7 @@ class ImageContainer extends PureComponent {
   }
 
   handleTouchStart(event) {
+    event.preventDefault();
     if (this.animationID) {
       raf.cancel(this.animationID);
     }
@@ -230,6 +231,7 @@ class ImageContainer extends PureComponent {
   }
 
   handleTouchMove(event) {
+    event.preventDefault();
     switch (event.touches.length) {
       case 1: {
         const targetEvent = event.touches[0];
@@ -317,6 +319,7 @@ class ImageContainer extends PureComponent {
   }
 
   handleTouchEnd(event) {
+    event.preventDefault();
     if (this.isTwoFingerMode) {
       // 双指操作结束
       const touchLen = event.touches.length;

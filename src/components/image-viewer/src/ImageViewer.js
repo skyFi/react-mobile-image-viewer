@@ -2,8 +2,6 @@ import React from 'react';
 import Pointer from './Pointer';
 import ListContainer from './ListContainer';
 
-import './ImageViewer.css';
-
 const screenWidth = typeof document !== 'undefined' && document.documentElement.clientWidth;
 const screenHeight = typeof document !== 'undefined' && document.documentElement.clientHeight;
 

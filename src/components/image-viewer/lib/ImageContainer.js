@@ -264,6 +264,8 @@ function (_PureComponent) {
   }, {
     key: "handleTouchStart",
     value: function handleTouchStart(event) {
+      event.preventDefault();
+
       if (this.animationID) {
         _raf.default.cancel(this.animationID);
       }
@@ -311,6 +313,8 @@ function (_PureComponent) {
     key: "handleTouchMove",
     value: function handleTouchMove(event) {
       var _this2 = this;
+
+      event.preventDefault();
 
       switch (event.touches.length) {
         case 1:
@@ -400,6 +404,8 @@ function (_PureComponent) {
     key: "handleTouchEnd",
     value: function handleTouchEnd(event) {
       var _this3 = this;
+
+      event.preventDefault();
 
       if (this.isTwoFingerMode) {
         // 双指操作结束
