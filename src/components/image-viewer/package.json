@@ -1,6 +1,6 @@
 {
   "name": "react-mobile-image-viewer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "🚀 React Image Viewer for mobile phone, just like wechat image preview.",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
-  "browserslist": "> 0.25%, not dead",
+  "browserslist": "last 2 versions",
   "devDependencies": {
     "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.0",
