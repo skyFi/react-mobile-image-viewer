@@ -402,7 +402,6 @@ function (_PureComponent) {
               }
             }
 
-            console.log('After callHandleMove', this.isMoveHVDirection, ', x > y =', Math.abs(diffX) > Math.abs(diffY));
             var screenHeight = this.props.screenHeight;
             var height = scale * this.originHeight;
             var newTop = (screenHeight - height) / 2;
@@ -413,7 +412,7 @@ function (_PureComponent) {
             } // 垂直移动
 
 
-            if (diffY > 0 && Math.abs(diffX) < Math.abs(diffY) && this.state.scale === this.originScale) {
+            if (diffY > 0 && this.state.top > 0 && Math.abs(diffX) < Math.abs(diffY) && this.state.scale === this.originScale) {
               this.opacity = 1 - Math.abs(diffY / screenHeight);
               this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
             }
