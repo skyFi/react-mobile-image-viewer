@@ -1,15 +1,5 @@
 # react-mobile-image-viewer
 
-## 预览
-
-预览：（这下面应该有 gif 动图）
-
-> gif 文件有 `11.2Mb`，网络不佳的情况下需要加载一段时间，请稍后，你还可以下载下来查看：[点击下载实例 gif](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__example.gif)
-
-![](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__example.gif)
-
-gif 文件位置：[https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer\_\_example.gif](https://github.com/skyFi/react-mobile-image-viewer/blob/master/react-mobile-image-viewer__example.gif)
-
 ## 体验
 
 ```bash
@@ -19,6 +9,9 @@ yarn && npm start
 ```
 
 1. 本地手机预览需要在同一个局域网下面访问`<本地电脑ip>:3000`
+2. 在线预览： [https://skyfi.github.io/react-mobile-image-viewer/](https://skyfi.github.io/react-mobile-image-viewer/)
+
+![](https://github.com/skyFi/react-mobile-image-viewer/raw/master/react-mobile-image-viewer__qrcode.png)
 
 ## 安装
 
@@ -63,7 +56,7 @@ import 'react-mobile-image-viewer/lib/index.css';
 | ------------ | --------------------------------------------------- | ---------------------------------------------- | --------------------- |
 | urls         | `string[]`                                          | 需要预览的图片链接列表                         | `[]`                  |
 | index        | `number`                                            | 当前显示图片的位置索引，从 `0` 开始            | `0`                   |
-| footer       | `ReactNode|({ currentIndex: number }) => ReactNode` | 自定义底部节点                                 | `null`                |
+| footer       | `ReactNode/({ currentIndex: number }) => ReactNode` | 自定义底部节点                                 | `null`                |
 | onClose      | `() => void`                                        | 关闭组件回调                                   | `() => {}`            |
 | onChange     | `({ currentIndex: number }) => void`                | 换页操作回调                                   | `() => {}`            |
 | getContainer | `() => DOM element`                                 | 自定义容器                                     | `() => document.body` |
