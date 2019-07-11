@@ -60,14 +60,14 @@ var _default = function _default() {
     $container = document.body;
   }
 
-  $container.appendChild($node); // 严格操作模式，开启将禁止 safari 的橡皮筋效果
-
-  strict && document.body.addEventListener('touchmove', handleTouchmove, {
-    passive: false
-  }); //passive 参数不能省略，用来兼容ios和android
-  // 渲染节点
+  $container.appendChild($node); // 渲染节点
 
   if (Array.isArray(urls) && urls.length > 0) {
+    // 严格操作模式，开启将禁止 safari 的橡皮筋效果
+    strict && document.body.addEventListener('touchmove', handleTouchmove, {
+      passive: false
+    }); //passive 参数不能省略，用来兼容ios和android
+
     _reactDom.default.render(_react.default.createElement(_ImageViewer.default, {
       index: index,
       urls: urls,

@@ -33,7 +33,7 @@ function getDistanceBetweenTouches(e) {
 // const msPerFrame = 1000 / 60;
 const maxAnimateTime = 1000;
 const minTapMoveValue = 5;
-const maxTapTimeValue = 70;
+const maxTapTimeValue = 100;
 
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
@@ -84,6 +84,10 @@ class ImageContainer extends PureComponent {
 
     this.diffX = 0; // 记录最后 move 事件 移动距离
     this.diffY = 0; // 记录最后 move 事件 移动距离
+
+    this.opacity = 1;
+    this.isCloseByYMove = false; // 迅速下划
+    this.isMoveHVDirection = ''; // 垂直和水平滚动只能是一个
 
     this.animationID = 0;
     this.animateStartTime = 0;
@@ -248,7 +252,46 @@ class ImageContainer extends PureComponent {
 
         const { scale, left } = this.state;
         const width = scale * this.originWidth;
-        if (Math.abs(diffX) > Math.abs(diffY)) {
+
+        // 快速滑动垂直水平兼容
+        if (this.state.scale === this.originScale) {
+          const speedX = Math.abs(diffX) / (Date.now() - this.onTouchStartTime);
+          if (speedX > 2) {
+            this.haveCallMoveFn = true;
+            this.callHandleMove(diffX);
+            return;
+          }
+        }
+
+        // 快速下滑关闭预览
+        const speedY = Math.abs(diffY) / (Date.now() - this.onTouchStartTime);
+        if (diffY > 0 && Math.abs(diffX) < 100 && this.state.scale === this.originScale && speedY > 2) {
+          this.props.onOpacity instanceof Function && this.props.onOpacity(0);
+          this.setState(
+            {
+              top: 800
+            },
+            () => {
+              setTimeout(() => {
+                this.props.onClose instanceof Function && this.props.onClose();
+              }, 500);
+            }
+          );
+          this.isCloseByYMove = true;
+          return;
+        }
+
+        // 垂直和水平只能一个方向滑动
+        if (!this.isMoveHVDirection && this.state.scale === this.originScale) {
+          if (Math.abs(diffX) < Math.abs(diffY)) {
+            this.isMoveHVDirection = 'top';
+          }
+          if (Math.abs(diffX) > Math.abs(diffY)) {
+            this.isMoveHVDirection = 'left';
+          }
+        }
+
+        if (this.isMoveHVDirection === 'left' || (!this.isMoveHVDirection && Math.abs(diffX) > Math.abs(diffY))) {
           // 水平移动
           if (this.state.scale === this.originScale && Math.abs(diffX) > minTapMoveValue) {
             this.haveCallMoveFn = true;
@@ -277,15 +320,33 @@ class ImageContainer extends PureComponent {
           }
         }
 
+        console.log('After callHandleMove', this.isMoveHVDirection, ', x > y =', Math.abs(diffX) > Math.abs(diffY));
+
         const { screenHeight } = this.props;
         const height = scale * this.originHeight;
         let newTop = (screenHeight - height) / 2;
-        const newLeft = this.startLeft + diffX;
+        let newLeft = this.startLeft + diffX;
 
         if (height > screenHeight || this.state.scale === this.originScale) {
           newTop = this.startTop + diffY;
         }
+
+        // 垂直移动
+        if (diffY > 0 && Math.abs(diffX) < Math.abs(diffY) && this.state.scale === this.originScale) {
+          this.opacity = 1 - Math.abs(diffY / screenHeight);
+          this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
+        }
+
         this.props.debug && console.info('handleTouchMove one newLeft=%s, newTop=%s', newLeft, newTop);
+
+        // 垂直和水平只能一个方向滑动
+        if (this.isMoveHVDirection === 'top') {
+          newLeft = this.state.left;
+        }
+        if (this.isMoveHVDirection === 'left') {
+          newTop = this.state.top;
+        }
+
         this.setState({
           left: newLeft,
           top: newTop
@@ -370,10 +431,9 @@ class ImageContainer extends PureComponent {
         };
       });
     } else {
-      const now = Date.now();
       // 单指结束（ontouchend）
+      const now = Date.now();
       const diffTime = now - this.onTouchStartTime;
-      this.lastTouchEndTime = now;
       const { diffX, diffY } = this;
 
       this.props.debug &&
@@ -384,9 +444,25 @@ class ImageContainer extends PureComponent {
         return;
       }
 
+      // 下滑结束，关闭组件
+      if (!this.isCloseByYMove) {
+        if (this.opacity < 0.5) {
+          this.props.onOpacity instanceof Function && this.props.onOpacity(0);
+          setTimeout(() => {
+            this.props.onClose instanceof Function && this.props.onClose();
+            this.opacity = 1;
+            this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
+          }, 500);
+          return;
+        } else {
+          this.opacity = 1;
+          this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
+        }
+      }
+
       // 水平移动
       if (this.haveCallMoveFn) {
-        const isChangeImage = this.callHandleEnd(diffY < 30);
+        const isChangeImage = this.callHandleEnd();
         if (isChangeImage) {
           // 如果切换图片则重置当前图片状态
           setTimeout(() => {
@@ -399,16 +475,6 @@ class ImageContainer extends PureComponent {
           return;
         }
       }
-      // TODO: 下拉移动距离超过屏幕高度的 1/3 则关闭
-      // this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
-      // if (
-      //   Math.abs(diffX) < Math.abs(diffY) &&
-      //   Math.abs(diffY) > this.props.screenHeight / 3 &&
-      //   this.startTop === this.originTop
-      // ) {
-      //   this.props.onClose instanceof Function && this.props.onClose();
-      //   return;
-      // }
 
       let x;
       let y;
@@ -437,6 +503,10 @@ class ImageContainer extends PureComponent {
         }
       }
 
+      if (this.isCloseByYMove) {
+        y = 1000;
+      }
+
       this.animateStartValue = {
         x: this.state.left,
         y: this.state.top
@@ -448,6 +518,9 @@ class ImageContainer extends PureComponent {
       this.animateStartTime = Date.now();
       this.startAnimate();
     }
+
+    this.isMoveHVDirection = '';
+    this.isCloseByYMove = false;
   }
 
   startAnimate() {
@@ -499,7 +572,7 @@ class ImageContainer extends PureComponent {
     this.props.handleMove(diffX);
   };
 
-  callHandleEnd = isAllowChange => {
+  callHandleEnd = (isAllowChange = true) => {
     if (this.isCalledHandleStart) {
       this.isCalledHandleStart = false;
       if (this.props.handleEnd) {

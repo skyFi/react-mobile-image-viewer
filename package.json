@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "publish": "cd src/components/image-viewer && npm publish",
+    "publish": "./node_modules/.bin/prettier --write \"src/**/*.js\" && cd src/components/image-viewer && npm publish",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postbuild": "react-snap"

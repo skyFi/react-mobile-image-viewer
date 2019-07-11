@@ -46,9 +46,11 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ImageViewer).call(this, props));
     _this.state = {
-      index: props.index || 0
+      index: props.index || 0,
+      opacity: 1
     };
     _this.changeIndex = _this.changeIndex.bind(_assertThisInitialized(_this));
+    _this.handleOpacity = _this.handleOpacity.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -67,6 +69,13 @@ function (_React$Component) {
       }
     }
   }, {
+    key: "handleOpacity",
+    value: function handleOpacity(opacity) {
+      this.setState({
+        opacity: opacity
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -80,7 +89,9 @@ function (_React$Component) {
           debug = _this$props.debug,
           width = _this$props.screenWidth,
           height = _this$props.screenHeight;
-      var index = this.state.index; // 获取底部元素
+      var _this$state = this.state,
+          index = _this$state.index,
+          opacity = _this$state.opacity; // 获取底部元素
 
       function getFooter() {
         if (footer instanceof Function) {
@@ -101,7 +112,9 @@ function (_React$Component) {
       return _react.default.createElement("div", {
         className: "fly-component-image-viewer-container",
         style: {
-          zIndex: zIndex
+          zIndex: zIndex,
+          opacity: opacity,
+          transition: "all ".concat(opacity !== 0 && opacity !== 1 ? 100 : 500, "ms")
         }
       }, _react.default.createElement("div", {
         className: "viewer-container__cover"
@@ -110,6 +123,7 @@ function (_React$Component) {
         screenHeight: height || screenHeight,
         changeIndex: this.changeIndex,
         onClose: onClose,
+        onOpacity: this.handleOpacity,
         debug: debug,
         urls: urls,
         maxZoomNum: maxZoomNum,

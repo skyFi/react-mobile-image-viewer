@@ -184,7 +184,8 @@ function (_PureComponent) {
           urls = _this$props2.urls,
           speed = _this$props2.speed,
           onClose = _this$props2.onClose,
-          debug = _this$props2.debug;
+          debug = _this$props2.debug,
+          onOpacity = _this$props2.onOpacity;
       var left = this.state.left;
       var defaultStyle = {};
 
@@ -212,6 +213,7 @@ function (_PureComponent) {
           handleStart: _this2.handleStart,
           handleMove: _this2.handleMove,
           handleEnd: _this2.handleEnd,
+          onOpacity: onOpacity,
           onClose: onClose,
           left: _this2.perDistance * i,
           screenWidth: screenWidth,

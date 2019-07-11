@@ -10,9 +10,11 @@ export default class ImageViewer extends React.Component {
     super(props);
 
     this.state = {
-      index: props.index || 0
+      index: props.index || 0,
+      opacity: 1
     };
     this.changeIndex = this.changeIndex.bind(this);
+    this.handleOpacity = this.handleOpacity.bind(this);
   }
 
   changeIndex(index) {
@@ -21,6 +23,10 @@ export default class ImageViewer extends React.Component {
     if (onChange instanceof Function) {
       onChange({ currentIndex: index });
     }
+  }
+
+  handleOpacity(opacity) {
+    this.setState({ opacity });
   }
 
   render() {
@@ -36,7 +42,7 @@ export default class ImageViewer extends React.Component {
       screenWidth: width,
       screenHeight: height
     } = this.props;
-    const { index } = this.state;
+    const { index, opacity } = this.state;
 
     // 获取底部元素
     function getFooter() {
@@ -54,13 +60,17 @@ export default class ImageViewer extends React.Component {
     const f = getFooter();
 
     return (
-      <div className="fly-component-image-viewer-container" style={{ zIndex }}>
+      <div
+        className="fly-component-image-viewer-container"
+        style={{ zIndex, opacity, transition: `all ${opacity !== 0 && opacity !== 1 ? 100 : 500}ms` }}
+      >
         <div className="viewer-container__cover" />
         <ListContainer
           screenWidth={width || screenWidth}
           screenHeight={height || screenHeight}
           changeIndex={this.changeIndex}
           onClose={onClose}
+          onOpacity={this.handleOpacity}
           debug={debug}
           urls={urls}
           maxZoomNum={maxZoomNum}

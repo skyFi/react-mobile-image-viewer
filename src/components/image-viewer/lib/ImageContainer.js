@@ -66,7 +66,7 @@ function getDistanceBetweenTouches(e) {
 
 var maxAnimateTime = 1000;
 var minTapMoveValue = 5;
-var maxTapTimeValue = 70;
+var maxTapTimeValue = 100;
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
  * 图片实际尺寸： actualWith, actualHeight
@@ -135,7 +135,9 @@ function (_PureComponent) {
     Object.defineProperty(_assertThisInitialized(_this), "callHandleEnd", {
       enumerable: true,
       writable: true,
-      value: function value(isAllowChange) {
+      value: function value() {
+        var isAllowChange = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
         if (_this.isCalledHandleStart) {
           _this.isCalledHandleStart = false;
 
@@ -175,6 +177,11 @@ function (_PureComponent) {
     _this.diffX = 0; // 记录最后 move 事件 移动距离
 
     _this.diffY = 0; // 记录最后 move 事件 移动距离
+
+    _this.opacity = 1;
+    _this.isCloseByYMove = false; // 迅速下划
+
+    _this.isMoveHVDirection = ''; // 垂直和水平滚动只能是一个
 
     _this.animationID = 0;
     _this.animateStartTime = 0;
@@ -333,9 +340,46 @@ function (_PureComponent) {
             var _this$state = this.state,
                 scale = _this$state.scale,
                 left = _this$state.left;
-            var width = scale * this.originWidth;
+            var width = scale * this.originWidth; // 快速滑动垂直水平兼容
 
-            if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (this.state.scale === this.originScale) {
+              var speedX = Math.abs(diffX) / (Date.now() - this.onTouchStartTime);
+
+              if (speedX > 2) {
+                this.haveCallMoveFn = true;
+                this.callHandleMove(diffX);
+                return;
+              }
+            } // 快速下滑关闭预览
+
+
+            var speedY = Math.abs(diffY) / (Date.now() - this.onTouchStartTime);
+
+            if (diffY > 0 && Math.abs(diffX) < 100 && this.state.scale === this.originScale && speedY > 2) {
+              this.props.onOpacity instanceof Function && this.props.onOpacity(0);
+              this.setState({
+                top: 800
+              }, function () {
+                setTimeout(function () {
+                  _this2.props.onClose instanceof Function && _this2.props.onClose();
+                }, 500);
+              });
+              this.isCloseByYMove = true;
+              return;
+            } // 垂直和水平只能一个方向滑动
+
+
+            if (!this.isMoveHVDirection && this.state.scale === this.originScale) {
+              if (Math.abs(diffX) < Math.abs(diffY)) {
+                this.isMoveHVDirection = 'top';
+              }
+
+              if (Math.abs(diffX) > Math.abs(diffY)) {
+                this.isMoveHVDirection = 'left';
+              }
+            }
+
+            if (this.isMoveHVDirection === 'left' || !this.isMoveHVDirection && Math.abs(diffX) > Math.abs(diffY)) {
               // 水平移动
               if (this.state.scale === this.originScale && Math.abs(diffX) > minTapMoveValue) {
                 this.haveCallMoveFn = true;
@@ -358,6 +402,7 @@ function (_PureComponent) {
               }
             }
 
+            console.log('After callHandleMove', this.isMoveHVDirection, ', x > y =', Math.abs(diffX) > Math.abs(diffY));
             var screenHeight = this.props.screenHeight;
             var height = scale * this.originHeight;
             var newTop = (screenHeight - height) / 2;
@@ -365,9 +410,24 @@ function (_PureComponent) {
 
             if (height > screenHeight || this.state.scale === this.originScale) {
               newTop = this.startTop + diffY;
+            } // 垂直移动
+
+
+            if (diffY > 0 && Math.abs(diffX) < Math.abs(diffY) && this.state.scale === this.originScale) {
+              this.opacity = 1 - Math.abs(diffY / screenHeight);
+              this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
             }
 
-            this.props.debug && console.info('handleTouchMove one newLeft=%s, newTop=%s', newLeft, newTop);
+            this.props.debug && console.info('handleTouchMove one newLeft=%s, newTop=%s', newLeft, newTop); // 垂直和水平只能一个方向滑动
+
+            if (this.isMoveHVDirection === 'top') {
+              newLeft = this.state.left;
+            }
+
+            if (this.isMoveHVDirection === 'left') {
+              newTop = this.state.top;
+            }
+
             this.setState({
               left: newLeft,
               top: newTop
@@ -449,10 +509,9 @@ function (_PureComponent) {
           };
         });
       } else {
-        var now = Date.now(); // 单指结束（ontouchend）
-
+        // 单指结束（ontouchend）
+        var now = Date.now();
         var diffTime = now - this.onTouchStartTime;
-        this.lastTouchEndTime = now;
         var diffX = this.diffX,
             diffY = this.diffY;
         this.props.debug && console.info('handleTouchEnd one diffTime = %s, diffX = %s, diffy = %s', diffTime, diffX, diffY); // 判断为点击则关闭图片浏览组件
@@ -460,11 +519,27 @@ function (_PureComponent) {
         if (diffTime < maxTapTimeValue && Math.abs(diffX) < minTapMoveValue && Math.abs(diffY) < minTapMoveValue) {
           this.props.onClose instanceof Function && this.props.onClose();
           return;
+        } // 下滑结束，关闭组件
+
+
+        if (!this.isCloseByYMove) {
+          if (this.opacity < 0.5) {
+            this.props.onOpacity instanceof Function && this.props.onOpacity(0);
+            setTimeout(function () {
+              _this3.props.onClose instanceof Function && _this3.props.onClose();
+              _this3.opacity = 1;
+              _this3.props.onOpacity instanceof Function && _this3.props.onOpacity(_this3.opacity);
+            }, 500);
+            return;
+          } else {
+            this.opacity = 1;
+            this.props.onOpacity instanceof Function && this.props.onOpacity(this.opacity);
+          }
         } // 水平移动
 
 
         if (this.haveCallMoveFn) {
-          var isChangeImage = this.callHandleEnd(diffY < 30);
+          var isChangeImage = this.callHandleEnd();
 
           if (isChangeImage) {
             // 如果切换图片则重置当前图片状态
@@ -477,17 +552,7 @@ function (_PureComponent) {
             }, maxAnimateTime / 3);
             return;
           }
-        } // TODO: 下拉移动距离超过屏幕高度的 1/3 则关闭
-        // this.props.debug && console.info(Math.abs(diffY) > this.props.screenHeight / 2, this.startTop, this.originTop);
-        // if (
-        //   Math.abs(diffX) < Math.abs(diffY) &&
-        //   Math.abs(diffY) > this.props.screenHeight / 3 &&
-        //   this.startTop === this.originTop
-        // ) {
-        //   this.props.onClose instanceof Function && this.props.onClose();
-        //   return;
-        // }
-
+        }
 
         var x;
         var y;
@@ -516,6 +581,10 @@ function (_PureComponent) {
           }
         }
 
+        if (this.isCloseByYMove) {
+          y = 1000;
+        }
+
         this.animateStartValue = {
           x: this.state.left,
           y: this.state.top
@@ -527,6 +596,9 @@ function (_PureComponent) {
         this.animateStartTime = Date.now();
         this.startAnimate();
       }
+
+      this.isMoveHVDirection = '';
+      this.isCloseByYMove = false;
     }
   }, {
     key: "startAnimate",

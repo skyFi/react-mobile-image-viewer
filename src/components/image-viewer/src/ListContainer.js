@@ -125,7 +125,7 @@ class ListContainer extends PureComponent {
   }
 
   render() {
-    const { maxZoomNum, screenWidth, screenHeight, urls, speed, onClose, debug } = this.props;
+    const { maxZoomNum, screenWidth, screenHeight, urls, speed, onClose, debug, onOpacity } = this.props;
 
     const { left } = this.state;
 
@@ -152,6 +152,7 @@ class ListContainer extends PureComponent {
             handleStart={this.handleStart}
             handleMove={this.handleMove}
             handleEnd={this.handleEnd}
+            onOpacity={onOpacity}
             onClose={onClose}
             left={this.perDistance * i}
             screenWidth={screenWidth}

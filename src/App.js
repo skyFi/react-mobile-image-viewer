@@ -15,16 +15,16 @@ class App extends React.Component {
   __preview() {
     viewer({
       urls: [
-        'assets/of.png',
         'assets/pexels-photo-273222.jpeg',
         'assets/pexels-photo-775415.jpeg',
+        'assets/of.png',
         'assets/pexels-photo-459793.jpeg',
         'assets/pexels-photo-533405.jpeg',
         'assets/pexels-photo-459688.jpeg',
         'assets/pexels-photo-416343.jpeg',
         'assets/pexels-photo-277615.jpeg'
       ],
-      debug: true
+      debug: false
     });
   }
   render() {
