@@ -24,6 +24,8 @@ class App extends React.Component {
         'assets/pexels-photo-416343.jpeg',
         'assets/pexels-photo-277615.jpeg'
       ],
+      doubleTap: true,
+      strict: true,
       debug: false
     });
   }

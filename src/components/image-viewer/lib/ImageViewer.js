@@ -87,8 +87,12 @@ function (_React$Component) {
           onClose = _this$props.onClose,
           footer = _this$props.footer,
           debug = _this$props.debug,
+          doubleTap = _this$props.doubleTap,
           width = _this$props.screenWidth,
-          height = _this$props.screenHeight;
+          height = _this$props.screenHeight,
+          containerClass = _this$props.containerClass,
+          maskClass = _this$props.maskClass,
+          footerClass = _this$props.footerClass;
       var _this$state = this.state,
           index = _this$state.index,
           opacity = _this$state.opacity; // 获取底部元素
@@ -110,19 +114,20 @@ function (_React$Component) {
 
       var f = getFooter();
       return _react.default.createElement("div", {
-        className: "fly-component-image-viewer-container",
+        className: "fly-component-image-viewer-container ".concat(containerClass),
         style: {
           zIndex: zIndex,
           opacity: opacity,
           transition: "all ".concat(opacity !== 0 && opacity !== 1 ? 100 : 500, "ms")
         }
       }, _react.default.createElement("div", {
-        className: "viewer-container__cover"
+        className: "viewer-container__cover ".concat(maskClass)
       }), _react.default.createElement(_ListContainer.default, {
         screenWidth: width || screenWidth,
         screenHeight: height || screenHeight,
         changeIndex: this.changeIndex,
         onClose: onClose,
+        doubleTap: doubleTap,
         onOpacity: this.handleOpacity,
         debug: debug,
         urls: urls,
@@ -131,7 +136,7 @@ function (_React$Component) {
         speed: speed,
         index: index
       }), f !== undefined ? _react.default.createElement("div", {
-        className: "viewer-container__pointer-box"
+        className: "viewer-container__pointer-box ".concat(footerClass)
       }, f) : _react.default.createElement(_Pointer.default, {
         length: urls.length,
         index: index,

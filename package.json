@@ -18,6 +18,7 @@
     "publish": "./node_modules/.bin/prettier --write \"src/**/*.js\" && cd src/components/image-viewer && npm publish",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "docs": "npm run build && rm -rf docs && mv build docs",
     "postbuild": "react-snap"
   },
   "homepage": "http://skyFi.github.io/react-mobile-image-viewer/",
@@ -30,7 +31,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run build && rm -rf docs && mv build docs && lint-staged"
+      "pre-commit": "npm run docs && lint-staged"
     }
   },
   "lint-staged": {

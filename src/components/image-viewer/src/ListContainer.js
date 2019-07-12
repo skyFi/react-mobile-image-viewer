@@ -125,7 +125,7 @@ class ListContainer extends PureComponent {
   }
 
   render() {
-    const { maxZoomNum, screenWidth, screenHeight, urls, speed, onClose, debug, onOpacity } = this.props;
+    const { maxZoomNum, screenWidth, screenHeight, urls, speed, onClose, debug, onOpacity, doubleTap } = this.props;
 
     const { left } = this.state;
 
@@ -148,6 +148,7 @@ class ListContainer extends PureComponent {
             key={i} // eslint-disable-line
             src={item}
             debug={debug}
+            doubleTap={doubleTap}
             maxZoomNum={maxZoomNum}
             handleStart={this.handleStart}
             handleMove={this.handleMove}

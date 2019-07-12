@@ -39,8 +39,12 @@ export default class ImageViewer extends React.Component {
       onClose,
       footer,
       debug,
+      doubleTap,
       screenWidth: width,
-      screenHeight: height
+      screenHeight: height,
+      containerClass,
+      maskClass,
+      footerClass
     } = this.props;
     const { index, opacity } = this.state;
 
@@ -61,15 +65,16 @@ export default class ImageViewer extends React.Component {
 
     return (
       <div
-        className="fly-component-image-viewer-container"
+        className={`fly-component-image-viewer-container ${containerClass}`}
         style={{ zIndex, opacity, transition: `all ${opacity !== 0 && opacity !== 1 ? 100 : 500}ms` }}
       >
-        <div className="viewer-container__cover" />
+        <div className={`viewer-container__cover ${maskClass}`} />
         <ListContainer
           screenWidth={width || screenWidth}
           screenHeight={height || screenHeight}
           changeIndex={this.changeIndex}
           onClose={onClose}
+          doubleTap={doubleTap}
           onOpacity={this.handleOpacity}
           debug={debug}
           urls={urls}
@@ -79,7 +84,7 @@ export default class ImageViewer extends React.Component {
           index={index}
         />
         {f !== undefined ? (
-          <div className="viewer-container__pointer-box">{f}</div>
+          <div className={`viewer-container__pointer-box ${footerClass}`}>{f}</div>
         ) : (
           <Pointer length={urls.length} index={index} changeIndex={this.changeIndex} />
         )}

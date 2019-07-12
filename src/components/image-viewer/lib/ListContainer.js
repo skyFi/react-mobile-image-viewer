@@ -185,7 +185,8 @@ function (_PureComponent) {
           speed = _this$props2.speed,
           onClose = _this$props2.onClose,
           debug = _this$props2.debug,
-          onOpacity = _this$props2.onOpacity;
+          onOpacity = _this$props2.onOpacity,
+          doubleTap = _this$props2.doubleTap;
       var left = this.state.left;
       var defaultStyle = {};
 
@@ -209,6 +210,7 @@ function (_PureComponent) {
           ,
           src: item,
           debug: debug,
+          doubleTap: doubleTap,
           maxZoomNum: maxZoomNum,
           handleStart: _this2.handleStart,
           handleMove: _this2.handleMove,

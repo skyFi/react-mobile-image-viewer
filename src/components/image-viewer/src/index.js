@@ -9,7 +9,7 @@ export const ImageViewer = Viewer;
 // 推荐！
 export default (options = {}) => {
   const {
-    maxZoomNum = 5, // 最大放大倍数
+    maxZoomNum = 8, // 最大放大倍数
     zIndex = 100, // 组件图层深度
     index = 0, // 当前显示图片的http链接
     urls = [], // 需要预览的图片http链接列表
@@ -22,7 +22,11 @@ export default (options = {}) => {
     screenWidth, // 屏幕宽 document.documentElement.clientWidth
     screenHeight, // 屏幕高 document.documentElement.clientHeight
     strict = true, // 严格操作模式，开启将禁止 safari 的橡皮筋效果
-    onChange = () => {} // 换页操作回调
+    doubleTap = true, // 是否开启双击放大效果，开启后会导致单击取消有个 `250ms` 的延时（作为双击判断），默认开启
+    onChange = () => {}, // 换页操作回调
+    containerClass = '', // 容器自定义样式类
+    maskClass = '', // 遮罩自定义样式类
+    footerClass = '' // 底部自定义样式类
   } = options;
   let $node = document.createElement('div');
   let $container = getContainer();
@@ -47,10 +51,14 @@ export default (options = {}) => {
         maxZoomNum={maxZoomNum}
         zIndex={zIndex}
         speed={speed}
+        doubleTap={doubleTap}
         gap={gap}
         screenHeight={screenHeight}
         screenWidth={screenWidth}
         debug={debug}
+        containerClass={containerClass}
+        maskClass={maskClass}
+        footerClass={footerClass}
       />,
       $node
     );
@@ -59,7 +67,7 @@ export default (options = {}) => {
   // 预览结束
   function handleClose() {
     onClose instanceof Function && onClose();
-    strict && document.body.removeEventListener('touchmove', handleTouchmove, { passive: false });
+    strict && document.body.removeEventListener('touchmove', handleTouchmove);
     if ($node) {
       $node.remove();
       $node = null;

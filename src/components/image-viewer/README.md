@@ -52,22 +52,23 @@ import 'react-mobile-image-viewer/lib/index.css';
 
 ## 配置
 
-| 属性         | 类型                                                | 描述                                           | 默认值                |
-| ------------ | --------------------------------------------------- | ---------------------------------------------- | --------------------- |
-| urls         | `string[]`                                          | 需要预览的图片链接列表                         | `[]`                  |
-| index        | `number`                                            | 当前显示图片的位置索引，从 `0` 开始            | `0`                   |
-| footer       | `ReactNode/({ currentIndex: number }) => ReactNode` | 自定义底部节点                                 | `null`                |
-| onClose      | `() => void`                                        | 关闭组件回调                                   | `() => {}`            |
-| onChange     | `({ currentIndex: number }) => void`                | 换页操作回调                                   | `() => {}`            |
-| getContainer | `() => DOM element`                                 | 自定义容器                                     | `() => document.body` |
-| maxZoomNum   | `number`                                            | 最大放大倍数                                   | `5`                   |
-| zIndex       | `number`                                            | 组件图层深度                                   | `100`                 |
-| screenWidth  | `number`                                            | 屏幕宽 `document.documentElement.clientWidth`  | `undefined`           |
-| screenHeight | `number`                                            | 屏幕高 `document.documentElement.clientHeight` | `undefined`           |
-| speed        | `number`                                            | 滑动的时长(in `ms`)                            | `300`                 |
-| gap          | `number`                                            | 间隙                                           | `10`                  |
-| debug        | `boolean`                                           | 是否打印开发日志                               | `false`               |
-| strict       | `boolean`                                           | 严格操作模式，开启将禁止 safari 的橡皮筋效果   | `true`                |
+| 属性         | 类型                                                     | 描述                                                                                    | 默认值                |
+| ------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------- |
+| urls         | `string[]`                                               | 需要预览的图片链接列表                                                                  | `[]`                  |
+| index        | `number`                                                 | 当前显示图片的位置索引，从 `0` 开始                                                     | `0`                   |
+| footer       | `ReactNode/({ currentIndex: number }) => ReactNode/null` | 自定义底部节点                                                                          | `undefined`           |
+| onClose      | `() => void`                                             | 关闭组件回调                                                                            | `() => {}`            |
+| onChange     | `({ currentIndex: number }) => void`                     | 换页操作回调                                                                            | `() => {}`            |
+| getContainer | `() => DOM element`                                      | 自定义容器                                                                              | `() => document.body` |
+| maxZoomNum   | `number`                                                 | 最大放大倍数                                                                            | `8`                   |
+| zIndex       | `number`                                                 | 组件图层深度                                                                            | `100`                 |
+| screenWidth  | `number`                                                 | 屏幕宽 `document.documentElement.clientWidth`                                           | `undefined`           |
+| screenHeight | `number`                                                 | 屏幕高 `document.documentElement.clientHeight`                                          | `undefined`           |
+| speed        | `number`                                                 | 滑动的时长(in `ms`)                                                                     | `300`                 |
+| gap          | `number`                                                 | 间隙(in `px`)                                                                           | `10`                  |
+| debug        | `boolean`                                                | 是否打印开发日志，默认关闭                                                              | `false`               |
+| strict       | `boolean`                                                | 严格操作模式，开启将禁止 safari 的橡皮筋效果，默认开启                                  | `true`                |
+| doubleTap    | `boolean`                                                | 是否开启双击放大效果，开启后会导致单击取消有个 `250ms` 的延时（作为双击判断），默认开启 | `true`                |
 
 ## 协议
 

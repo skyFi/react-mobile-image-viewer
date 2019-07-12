@@ -24,7 +24,7 @@ exports.ImageViewer = ImageViewer;
 var _default = function _default() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var _options$maxZoomNum = options.maxZoomNum,
-      maxZoomNum = _options$maxZoomNum === void 0 ? 5 : _options$maxZoomNum,
+      maxZoomNum = _options$maxZoomNum === void 0 ? 8 : _options$maxZoomNum,
       _options$zIndex = options.zIndex,
       zIndex = _options$zIndex === void 0 ? 100 : _options$zIndex,
       _options$index = options.index,
@@ -49,8 +49,16 @@ var _default = function _default() {
       screenHeight = options.screenHeight,
       _options$strict = options.strict,
       strict = _options$strict === void 0 ? true : _options$strict,
+      _options$doubleTap = options.doubleTap,
+      doubleTap = _options$doubleTap === void 0 ? true : _options$doubleTap,
       _options$onChange = options.onChange,
-      onChange = _options$onChange === void 0 ? function () {} : _options$onChange;
+      onChange = _options$onChange === void 0 ? function () {} : _options$onChange,
+      _options$containerCla = options.containerClass,
+      containerClass = _options$containerCla === void 0 ? '' : _options$containerCla,
+      _options$maskClass = options.maskClass,
+      maskClass = _options$maskClass === void 0 ? '' : _options$maskClass,
+      _options$footerClass = options.footerClass,
+      footerClass = _options$footerClass === void 0 ? '' : _options$footerClass;
   var $node = document.createElement('div');
   var $container = getContainer();
 
@@ -77,19 +85,21 @@ var _default = function _default() {
       maxZoomNum: maxZoomNum,
       zIndex: zIndex,
       speed: speed,
+      doubleTap: doubleTap,
       gap: gap,
       screenHeight: screenHeight,
       screenWidth: screenWidth,
-      debug: debug
+      debug: debug,
+      containerClass: containerClass,
+      maskClass: maskClass,
+      footerClass: footerClass
     }), $node);
   } // 预览结束
 
 
   function handleClose() {
     onClose instanceof Function && onClose();
-    strict && document.body.removeEventListener('touchmove', handleTouchmove, {
-      passive: false
-    });
+    strict && document.body.removeEventListener('touchmove', handleTouchmove);
 
     if ($node) {
       $node.remove();

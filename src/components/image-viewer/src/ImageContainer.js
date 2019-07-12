@@ -30,10 +30,18 @@ function getDistanceBetweenTouches(e) {
   return distance;
 }
 
+function clearTimer(timer) {
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
+}
+
 // const msPerFrame = 1000 / 60;
 const maxAnimateTime = 1000;
 const minTapMoveValue = 5;
 const maxTapTimeValue = 100;
+const maxDoubleTapTimeValue = 250;
 
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
@@ -75,6 +83,7 @@ class ImageContainer extends PureComponent {
     this.startScale = 1; // 开始缩放操作时的 scale 值
 
     this.onTouchStartTime = 0; // 单指触摸开始时间
+    this.lastTapEndTime = 0; // 最后一次单指触摸结束时间
 
     this.isTwoFingerMode = false; // 是否为双指模式
     this.oldPointLeft = 0; // 计算手指中间点在图片上的位置（坐标值）
@@ -145,6 +154,9 @@ class ImageContainer extends PureComponent {
       top = parseInt((screenHeight - this.originHeight) / 2, 10);
     }
     this.originTop = top;
+
+    // 图片原始 scale
+    this.originImageScale = this.actualHeight / this.originHeight;
 
     this.setState({
       width: this.originWidth,
@@ -384,10 +396,12 @@ class ImageContainer extends PureComponent {
 
   handleTouchEnd(event) {
     event.preventDefault();
+    const touchLen = event.touches.length;
     if (this.isTwoFingerMode) {
       // 双指操作结束
-      const touchLen = event.touches.length;
-      this.isTwoFingerMode = false;
+      setTimeout(() => {
+        this.isTwoFingerMode = false;
+      }, 250); // 容错误差
 
       if (touchLen === 1) {
         const targetEvent = event.touches[0];
@@ -437,13 +451,51 @@ class ImageContainer extends PureComponent {
       // 单指结束（ontouchend）
       const now = Date.now();
       const diffTime = now - this.onTouchStartTime;
+      const lastTapDiffTime = now - this.lastTapEndTime;
       const { diffX, diffY } = this;
+
+      // 双击判断
+      if (
+        this.props.doubleTap &&
+        lastTapDiffTime < maxDoubleTapTimeValue &&
+        Math.abs(diffX) < minTapMoveValue &&
+        Math.abs(diffY) < minTapMoveValue
+      ) {
+        clearTimer(this.closeTimer);
+
+        this.setState((prevState, props) => {
+          const scale = prevState.scale === this.originScale ? this.originImageScale : this.originScale;
+          const height = scale * this.originHeight;
+          let left = this.startX - (this.startX - this.startLeft) * scale;
+
+          let top;
+          if (height > props.screenHeight) {
+            top = this.startY - (this.startY - this.startTop) * scale;
+          } else {
+            top = (props.screenHeight - height) / 2;
+          }
+
+          if (scale === this.originScale) {
+            left = 0;
+            top = (props.screenHeight - height) / 2;
+          }
+          return { top, left, scale };
+        });
+        return;
+      }
+      this.lastTapEndTime = now;
 
       this.props.debug &&
         console.info('handleTouchEnd one diffTime = %s, diffX = %s, diffy = %s', diffTime, diffX, diffY);
       // 判断为点击则关闭图片浏览组件
       if (diffTime < maxTapTimeValue && Math.abs(diffX) < minTapMoveValue && Math.abs(diffY) < minTapMoveValue) {
-        this.props.onClose instanceof Function && this.props.onClose();
+        clearTimer(this.closeTimer);
+        this.closeTimer = setTimeout(
+          () => {
+            this.props.onClose instanceof Function && this.props.onClose();
+          },
+          !this.props.doubleTap ? 0 : maxDoubleTapTimeValue
+        ); // 等待双击判断
         return;
       }
 

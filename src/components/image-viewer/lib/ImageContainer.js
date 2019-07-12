@@ -61,12 +61,20 @@ function getDistanceBetweenTouches(e) {
   var y2 = e.touches[1].clientY;
   var distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   return distance;
+}
+
+function clearTimer(timer) {
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
 } // const msPerFrame = 1000 / 60;
 
 
 var maxAnimateTime = 1000;
 var minTapMoveValue = 5;
 var maxTapTimeValue = 100;
+var maxDoubleTapTimeValue = 250;
 /**
  * 图片默认展示模式：宽度等于屏幕宽度，高度等比缩放；水平居中，垂直居中或者居顶（当高度大于屏幕高度时）
  * 图片实际尺寸： actualWith, actualHeight
@@ -165,6 +173,8 @@ function (_PureComponent) {
 
     _this.onTouchStartTime = 0; // 单指触摸开始时间
 
+    _this.lastTapEndTime = 0; // 最后一次单指触摸结束时间
+
     _this.isTwoFingerMode = false; // 是否为双指模式
 
     _this.oldPointLeft = 0; // 计算手指中间点在图片上的位置（坐标值）
@@ -243,7 +253,9 @@ function (_PureComponent) {
         top = parseInt((screenHeight - this.originHeight) / 2, 10);
       }
 
-      this.originTop = top;
+      this.originTop = top; // 图片原始 scale
+
+      this.originImageScale = this.actualHeight / this.originHeight;
       this.setState({
         width: this.originWidth,
         height: this.originHeight,
@@ -465,11 +477,13 @@ function (_PureComponent) {
       var _this3 = this;
 
       event.preventDefault();
+      var touchLen = event.touches.length;
 
       if (this.isTwoFingerMode) {
         // 双指操作结束
-        var touchLen = event.touches.length;
-        this.isTwoFingerMode = false;
+        setTimeout(function () {
+          _this3.isTwoFingerMode = false;
+        }, 250); // 容错误差
 
         if (touchLen === 1) {
           var targetEvent = event.touches[0];
@@ -511,12 +525,47 @@ function (_PureComponent) {
         // 单指结束（ontouchend）
         var now = Date.now();
         var diffTime = now - this.onTouchStartTime;
+        var lastTapDiffTime = now - this.lastTapEndTime;
         var diffX = this.diffX,
-            diffY = this.diffY;
+            diffY = this.diffY; // 双击判断
+
+        if (this.props.doubleTap && lastTapDiffTime < maxDoubleTapTimeValue && Math.abs(diffX) < minTapMoveValue && Math.abs(diffY) < minTapMoveValue) {
+          clearTimer(this.closeTimer);
+          this.setState(function (prevState, props) {
+            var scale = prevState.scale === _this3.originScale ? _this3.originImageScale : _this3.originScale;
+            var height = scale * _this3.originHeight;
+            var left = _this3.startX - (_this3.startX - _this3.startLeft) * scale;
+            var top;
+
+            if (height > props.screenHeight) {
+              top = _this3.startY - (_this3.startY - _this3.startTop) * scale;
+            } else {
+              top = (props.screenHeight - height) / 2;
+            }
+
+            if (scale === _this3.originScale) {
+              left = 0;
+              top = (props.screenHeight - height) / 2;
+            }
+
+            return {
+              top: top,
+              left: left,
+              scale: scale
+            };
+          });
+          return;
+        }
+
+        this.lastTapEndTime = now;
         this.props.debug && console.info('handleTouchEnd one diffTime = %s, diffX = %s, diffy = %s', diffTime, diffX, diffY); // 判断为点击则关闭图片浏览组件
 
         if (diffTime < maxTapTimeValue && Math.abs(diffX) < minTapMoveValue && Math.abs(diffY) < minTapMoveValue) {
-          this.props.onClose instanceof Function && this.props.onClose();
+          clearTimer(this.closeTimer);
+          this.closeTimer = setTimeout(function () {
+            _this3.props.onClose instanceof Function && _this3.props.onClose();
+          }, !this.props.doubleTap ? 0 : maxDoubleTapTimeValue); // 等待双击判断
+
           return;
         } // 下滑结束，关闭组件
 
